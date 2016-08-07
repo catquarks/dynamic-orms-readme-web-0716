@@ -3,7 +3,6 @@ require 'active_support/inflector'
 
 class Song
 
-
   def self.table_name
     self.to_s.downcase.pluralize
   end
@@ -47,6 +46,8 @@ class Song
       values << "'#{send(col_name)}'" unless send(col_name).nil?
     end
     values.join(", ")
+    # we need send because "col_name" in this case only refers to a block variable in a faraway method -- e.g. it's in a diff. scope
+    # 'send' means the true name of the thing!
   end
 
   def col_names_for_insert
